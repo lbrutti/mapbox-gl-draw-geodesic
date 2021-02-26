@@ -32,6 +32,7 @@ DrawCircleGeodesic.onDrag = DrawCircleGeodesic.onTouchMove = function(state, e) 
     const radius = distance(center, handle);
     const handleBearing = bearing(center, handle);
     state.circle.properties[Constants.properties.CIRCLE_RADIUS] = radius;
+    state.circle.properties[Constants.properties.CIRCLE_HANDLE] = handle;
     state.circle[Constants.properties.CIRCLE_HANDLE_BEARING] = handleBearing;
     state.circle.changed();
   }

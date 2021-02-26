@@ -125,7 +125,7 @@ function createGeodesicGeojson(geojson, options) {
       const vertices = points.map((point, i) => {
         return createVertex(properties.id, point, `0.${i}`, isSelectedPath(`0.${i}`));
       })
-  
+        vertices[1].properties.isHandle = "true";// flag last vertex as handle
       return [geodesicGeojson, ...vertices];
     } else {
       return [geodesicGeojson];

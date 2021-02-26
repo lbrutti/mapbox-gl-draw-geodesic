@@ -26,7 +26,7 @@ function bundle(filename, options = {}) {
       resolve(),
       commonjs(),
       babel({ babelHelpers: 'runtime' }),
-      options.minimize ? terser() : false,
+    //   options.minimize ? terser() : false,
       options.stats ? visualizer({
         filename: filename + '.stats.html',
       }) : false,
