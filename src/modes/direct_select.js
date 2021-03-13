@@ -6,6 +6,33 @@ import createGeodesicGeojson from '../utils/create_geodesic_geojson';
 function patchDirectSelect(DirectSelect) {
     const DirectSelectPatched = { ...DirectSelect };
 
+    DirectSelectPatched.dragMove = () => {
+        console.log("DirectSelectPatched.dragMove") //don't do anything cause want to prevent Polygon movement.
+    };
+    DirectSelectPatched.onDrag = (state, e, delta) => {
+        let isHandleDrag = state.selectedCoordPaths[0] === '0.1';
+        if(isHandleDrag){
+            const geojson = state.feature.toGeoJSON();
+            const center = getCircleCenter(geojson);
+            const handle = [e.lngLat.lng, e.lngLat.lat];
+            const radius = distance(center, handle);
+            const handleBearing = bearing(center, handle);
+            state.feature.properties[Constants.properties.CIRCLE_RADIUS] = radius;
+            state.feature.properties[Constants.properties.CIRCLE_HANDLE] = handle;
+
+            state.feature[Constants.properties.CIRCLE_HANDLE_BEARING] = handleBearing;
+            state.feature.changed();
+            // DirectSelect.onDrag.call(this, [state,e,delta]);
+            // console.log(state);
+            // console.log(e);
+            // console.log(delta);
+            // console.log("DirectSelectPatched.onDrag") //don't do anything cause want to prevent Polygon movement.
+        } else {
+            console.log('DirectSelectPatched.onDrag noop');
+            return;
+        }
+        
+    };
     DirectSelectPatched.dragVertex = function (state, e, delta) {
         const geojson = state.feature.toGeoJSON();
 
