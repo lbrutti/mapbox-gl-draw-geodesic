@@ -25,17 +25,17 @@ DrawCircleGeodesic.onMouseDown = DrawCircleGeodesic.onTouchStart = function(stat
 };
 
 DrawCircleGeodesic.onDrag = DrawCircleGeodesic.onTouchMove = function(state, e) {
-  if (state.circle) {
-    const geojson = state.circle.toGeoJSON();
-    const center = getCircleCenter(geojson);
-    const handle = [e.lngLat.lng, e.lngLat.lat];
-    const radius = distance(center, handle);
-    const handleBearing = bearing(center, handle);
-    state.circle.properties[Constants.properties.CIRCLE_RADIUS] = radius;
-    state.circle.properties[Constants.properties.CIRCLE_HANDLE] = handle;
-    state.circle[Constants.properties.CIRCLE_HANDLE_BEARING] = handleBearing;
-    state.circle.changed();
-  }
+//   if (state.circle) {
+//     const geojson = state.circle.toGeoJSON();
+//     const center = getCircleCenter(geojson);
+//     const handle = [e.lngLat.lng, e.lngLat.lat];
+//     const radius = distance(center, handle);
+//     const handleBearing = bearing(center, handle);
+//     state.circle.properties[Constants.properties.CIRCLE_RADIUS] = radius;
+//     state.circle.properties[Constants.properties.CIRCLE_HANDLE] = handle;
+//     state.circle[Constants.properties.CIRCLE_HANDLE_BEARING] = handleBearing;
+//     state.circle.changed();
+//   }
 };
 
 DrawCircleGeodesic.onMouseUp = DrawCircleGeodesic.onTouchEnd = function(state, e) {
@@ -56,8 +56,8 @@ DrawCircleGeodesic.onKeyUp = function(state, e) {
 
 DrawCircleGeodesic.onStop = function() {
   this.updateUIClasses({ mouse: Constants.cursors.NONE });
-  doubleClickZoom.enable(this);
-  dragPan.enable(this);
+  doubleClickZoom.disable(this);
+  dragPan.disable(this);
   this.activateUIButton();
 }
 
