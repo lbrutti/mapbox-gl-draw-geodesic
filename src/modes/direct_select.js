@@ -10,23 +10,27 @@ function patchDirectSelect(DirectSelect) {
 
     //overwrite to disable draw moving.
     DirectSelectPatched.onDrag = (state, e, delta) => {
-        let isHandleDrag = state.selectedCoordPaths[0] === '0.1';
         const geojson = state.feature.toGeoJSON();
-        if(isHandleDrag){
-            const center = getCircleCenter(geojson);
-            const handle = [e.lngLat.lng, e.lngLat.lat];
-            const radius = distance(center, handle);
-            const handleBearing = bearing(center, handle);
-            state.feature.properties[Constants.properties.CIRCLE_RADIUS] = radius;
-            state.feature.properties[Constants.properties.CIRCLE_HANDLE] = handle;
 
-            state.feature[Constants.properties.CIRCLE_HANDLE_BEARING] = handleBearing;
-            state.feature.changed();
-        
-        } else {
-            return;
+        if (isCircle(geojson)) {
+            if (state.selectedCoordPaths[0] === '0.1') {
+                if (state.canDragMove !== true) return;
+                state.dragMoving = true;
+                e.originalEvent.stopPropagation();
+
+                const delta = {
+                    lng: e.lngLat.lng - state.dragMoveLocation.lng,
+                    lat: e.lngLat.lat - state.dragMoveLocation.lat
+                };
+                DirectSelectPatched.dragVertex.call(this, state, e, delta);
+
+
+                state.dragMoveLocation = e.lngLat;
+            }
+
         }
-        
+
+
     };
     DirectSelectPatched.dragVertex = function (state, e, delta) {
         const geojson = state.feature.toGeoJSON();
